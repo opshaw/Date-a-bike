@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Details</title>
+    <link rel="stylesheet" href="/css/account.css">
+</head>
+<body>
+    <div class="account-details">
+        <div class="profile-div">
+            <div class="image-div">
+                <img src="/images/avatar.png" alt="avatar">
+            </div>
+            <div class="profile">
+                <p>Profile</p>
+                <img id="pencil" src="/images/pencil.jpeg" alt="Edit Profile">
+            </div>
+        </div>
+        
+        <div class="detail-div">
+            <div class="box">
+                <p>Name:</p>
+                <p class="fullname"><%= user.fullName %></p>
+            </div>
+            <div class="box">
+                <p>Email:</p>
+                <p class="email"><%= user.email %></p>
+            </div>
+            <div class="box">
+                <p>UserName:</p>
+                <p class="username"><%= user.username %></p>
+            </div>
+
+            <button id="logout-button">Logout</button>
+        </div>
+    </div>
+    <script src="/javascript/account.js"></script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    height: 100vh;
+    background-color: #f5efef;
+}
+
+.navbar {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+}
+
+.logo {
+    font-size: 24px;
+}
+
+.logo .fin {
+    color: green;
+    font-weight: 900;
+}
+
+.logo .track {
+    color: black;
+    font-weight: 800;
+}
+
+.nav-buttons button {
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    transition: box-shadow 0.3s ease; /* Smooth shadow transition */
+}
+
+.signin-btn {
+    background-color: green;
+    margin-right: 10px;
+}
+
+.signup-btn {
+    background-color: green;
+}
+
+.main-body {
+    text-align: center;
+    margin-top: 100px;
+}
+
+
+.main-text {
+    font-size: 43px;
+    color: black;
+    font-weight: 800;
+    margin-bottom: 25px;
+    line-height: 1.1;
+}
+
+.highlight {
+    color: green;
+}
+
+.sub-text {
+    font-size: 20px;
+    color: black;
+    margin-bottom: 40px;
+    font-weight: bold;
+}
+
+.get-started-btn {
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    transition: box-shadow 0.3s ease; /* Smooth shadow transition */
+    margin-bottom: 25px;
+}
+
+.get-started-btn:hover, .nav-buttons button:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+a{
+    color: white;
+    text-decoration: none;
+}
+.card-box{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+.card {
+    display: flex;
+    width: 895px;
+    border-radius: 10px;
+    border: 1px solid rgb(251, 249, 249);
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.17), 5px 0 10px rgba(0, 0, 0, 0.17);
+    background-color: white;
+    overflow: hidden;
+}
+
+.about-section {
+    flex: 1;
+    padding: 20px;
+    background-color: #f0f0f0;
+    text-align: left;
+}
+
+.about-section h2 {
+    font-size: 27px;
+    color: black;
+    margin-bottom: 10px;
+    margin-left: 6px;
+}
+
+.about-points {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.about-points li {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.about-points li {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
+    opacity: 0; 
+    animation: showAndHide 11s linear forwards;
+}
+
+/* Keyframes for showing and hiding list items */
+@keyframes showAndHide {
+    0%, 15% {
+        opacity: 0; 
+        transform: translateY(10px);
+    }
+    20%, 80% {
+        opacity: 1; 
+        transform: translateY(0);
+    }
+    85%, 100% {
+        opacity: 0; 
+        transform: translateY(10px);
+    }
+}
+
+/* Delay each list item to show one by one */
+.about-points li:nth-child(1) {
+    animation-delay: 0; 
+}
+
+.about-points li:nth-child(2) {
+    animation-delay: 1s; 
+}
+
+.about-points li:nth-child(3) {
+    animation-delay: 2s; 
+}
+
+.about-points li:nth-child(4) {
+    animation-delay: 3s; 
+}
+
+.about-points li:nth-child(5) {
+    animation-delay: 4s;
+}
+
+.about-points li {
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+}
+.image-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+
+}
+
+.demo-image {
+    max-width: 100%;
+    height: 100%;
+}

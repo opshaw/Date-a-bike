@@ -1,0 +1,233 @@
+/* body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    text-align: center;
+} */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-bar {
+    width: 200px;
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    z-index: 1;
+}
+
+.fin {
+    font-size: 24px;
+    color: green;
+    font-weight: 900;
+}
+
+.track {
+    font-size: 24px;
+    color: black;
+    font-weight: 800;
+}
+
+.navbuttons {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    margin-top: 10px;
+}
+
+.nav-bar button {
+    font-size: 20px;
+    border: none;
+    background-color: white;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.nav-bar button:hover {
+    background-color: #f5efef;
+}
+
+#account {
+    margin: 10px 10px;
+    padding: 10px 25px;
+}
+
+.header {
+    width: calc(100vw - 200px);
+    height: 70px;
+    margin-left: 200px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    position: fixed;
+    top: 0;
+}
+
+.header button {
+    border: 1px solid grey;
+    background-color: #f5efef;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-right: 10px;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.header button:hover {
+    background-color: #cbc5c5;
+}
+
+#header-buttons {
+    position: absolute;
+    right: 10px;
+}
+.help-btn {
+    position: relative;
+    background-color: #f5efef;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: rgb(201, 197, 197);
+    color: black;
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+    top: 100%; 
+    left: 20%;
+    transform: translateX(-50%);
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 1.4;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.help-btn:hover + .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.container {
+    margin-top: 70px;
+    margin-left: 200px;
+    padding: 50px;
+    background-color: #f5efef;
+    min-height: calc(100vh - 70px);
+    width: calc(100vw - 200px);
+}
+
+.header1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#color-code{
+    color: green;
+}
+
+.header1 h1 {
+    margin: 0;
+}
+
+.coin-counter, .goal-counter {
+    font-size: 1.5rem;
+}
+
+.goal-form {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    gap: 10px;
+}
+
+.goal-form input, .goal-form button {
+    padding: 10px;
+    font-size: 1rem;
+}
+
+.goal-list {
+    margin-top: 20px;
+}
+.goal-buttons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+#add-goal{
+    background-color: green;
+    color: white;
+}
+.goal-item {
+    display: flex;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s, text-decoration 0.3s;
+} 
+
+.goal-item.achieved {
+    background-color: rgba(144, 238, 144, 0.5);
+}
+
+.goal-item.not-achieved {
+    background-color: rgba(255, 182, 193, 0.5);
+    text-decoration: line-through;
+}
+
+.goal-item button {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+}
+
+.goal-buttons .tick-button {
+    background-color: rgb(59, 162, 59);
+    margin-right: 15px;
+}
+
+
+.goal-buttons .cross-button {
+    background-color: rgb(233, 76, 76);
+}
+
+.goal-item span {
+    width: 33%;
+    text-align: center;
+} 
