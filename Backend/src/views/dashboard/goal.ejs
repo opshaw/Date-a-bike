@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goal Setter</title>
+    <link rel="stylesheet" href="/css/goal.css">
+</head>
+<body>
+    <div class="nav-bar">
+        <div class="navbuttons">
+            <p><span class="fin">Fin</span><span class="track">Track</span></p>
+            <button><a href="/api/v1/users/dashboard">Overview</a></button>
+            <button><a href="/api/v1/users/income">Income</a></button>
+            <button><a href="/api/v1/users/expense">Expense</a></button>
+            <button><a href="/api/v1/users/goals">Goals</a></button>
+        </div>
+        <div>
+            <button id="account"><a href="/api/v1/users/info">Account</a></button>
+        </div>
+    </div>
+
+    <div class="header">
+        <div id="header-buttons">
+            <button class="help-btn">Help?</button>
+            <pre class="tooltip-text">In Goal section, you have to set 
+your goal and amount want to be 
+ achieved.
+If the user achieves their goals
+then gets a Fin-coin.  
+            </pre>
+            <button><a href="/api/v1/users/info">account</a></button>
+        </div>
+    </div>
+    <div class="container">
+    <div class="header1">
+        <h1>Achieve Your<span id="color-code"> Goals</span>😁</h1>
+        <div>
+            <div class="coin-counter">Coins: <span id="coin-count">0</span></div>
+            <div class="goal-counter">Goals: <span id="goal-count">0</span></div>
+        </div>
+    </div>
+    <div class="goal-form">
+        <input type="text" id="goal" placeholder="Enter your Goal" list="suggestions">
+        <datalist id="suggestions">
+            <option value="Save your Amount 😁"></option>
+        </datalist>
+        <input type="number" id="amount" placeholder="Enter the Amount">
+        <button id="add-goal">ADD</button>
+    </div>
+
+    <div class="goal-list" id="goal-list">
+    </div>
+</div>
+    <script src="/javascript/goal.js"></script>
+</body>
+</html>
+

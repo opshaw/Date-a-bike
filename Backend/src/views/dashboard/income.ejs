@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revenue Tracker</title>
+    <link rel="stylesheet" href="/css/income.css">
+</head>
+
+<body>
+
+    <div class="nav-bar">
+        <div class="navbuttons">
+            <p><span class="fin">Fin</span><span class="track">Track</span></p>
+            <button><a href="/api/v1/users/dashboard">Overview</a></button>
+            <button><a href="/api/v1/users/income">Income</a></button>
+            <button><a href="/api/v1/users/expense">Expense</a></button>
+            <button><a href="/api/v1/users/goals">Goals</a></button>
+        </div>
+        <div>
+            <button id="account"><a href="/api/v1/users/info">Account</a></button>
+        </div>
+    </div>
+
+    <div class="header">
+        <div id="header-buttons">
+            <button class="help-btn">Help?</button>
+            <pre class="tooltip-text">In Income section, you have to fill 
+your amount to be added.
+
+U have to select Date and click 
+on the +Add Revenue button to 
+Add Income.  
+            </pre>
+            <button><a href="/api/v1/users/info">account</a></button>
+        </div>
+    </div>
+
+    <div class="container">
+        <span id="dateselection">
+            <h2>Select Date:</h2>
+            <input type="date" id="revenue-date">
+        </span>
+
+        <h2>Total Revenue:</h2>
+        <div id="total-revenue">₹00</div>
+
+        <button id="add-revenue-btn" style="font-size: 18px; padding: 12px 30px;">+ Add Revenue</button>
+
+        <table id="revenue-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Income</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+
+        <button id="save-revenue-btn" style="font-size: 18px; padding: 12px 30px; margin-top: 30px;">Save Revenue</button>
+    </div>
+
+    <script>
+        document.getElementById("add-revenue-btn").addEventListener("click", () => {
+            const revenueTable = document.getElementById("revenue-table");
+            revenueTable.style.display = "table";
+            addRevenueRow();
+        });
+
+        document.getElementById("save-revenue-btn").addEventListener("click", saveRevenue);
+
+        function addRevenueRow() {
+            const tableBody = document.getElementById("revenue-table").getElementsByTagName("tbody")[0];
+            const row = document.createElement("tr");
+
+            const dateCell = document.createElement("td");
+            const revenueDateInput = document.getElementById("revenue-date");
+            dateCell.innerText = revenueDateInput.value;
+            row.appendChild(dateCell);
+
+            const salaryCell = document.createElement("td");
+            const salaryInput = document.createElement("input");
+            salaryInput.type = "text";
+            salaryInput.value = "Income";
+            salaryInput.readOnly = true;
+            salaryCell.appendChild(salaryInput);
+            row.appendChild(salaryCell);
+
+            const amountCell = document.createElement("td");
+            const amountInput = document.createElement("input");
+            amountInput.type = "number";
+            amountInput.placeholder = "Enter amount";
+            amountInput.className = "amount-input";
+            amountInput.addEventListener("input", updateTotalRevenue);
+            amountCell.appendChild(amountInput);
+            row.appendChild(amountCell);
+
+            const actionCell = document.createElement("td");
+            const deleteButton = document.createElement("span");
+            deleteButton.innerText = "🗑️";
+            deleteButton.className = "delete-btn";
+            deleteButton.addEventListener("click", () => {
+                tableBody.removeChild(row);
+                updateTotalRevenue();
+            });
+            actionCell.appendChild(deleteButton);
+            row.appendChild(actionCell);
+
+            tableBody.appendChild(row);
+        }
+
+        function updateTotalRevenue() {
+            const amountInputs = document.getElementsByClassName("amount-input");
+            let total = 0;
+            for (let input of amountInputs) {
+                const value = parseFloat(input.value) || 0;
+                total += value;
+            }
+            document.getElementById("total-revenue").innerText = "₹" + total.toFixed(2);
+        }
+
+        function saveRevenue() {
+            const tableBody = document.getElementById("revenue-table").getElementsByTagName("tbody")[0];
+            const rows = tableBody.getElementsByTagName("tr");
+            const revenues = [];
+            const selectedDate = document.getElementById("revenue-date").value;
+            if (!selectedDate) {
+                alert("Please select a date for the revenue.");
+                return;
+            }
+
+            for (let row of rows) {
+                const cells = row.getElementsByTagName("td");
+                const salary = cells[1].getElementsByTagName("input")[0].value.trim();
+                const amount = cells[2].getElementsByTagName("input")[0].value.trim();
+                if (salary && amount) {
+                    revenues.push({
+                        date: selectedDate,
+                        salary,
+                        amount: parseFloat(amount),
+                    });
+
+                    const incomeData={
+                        amount:amount,
+                        date:selectedDate
+                    }
+
+                    const url='/api/v1/users/income/addIncome'
+                    const options = {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(incomeData) // Convert form data to JSON
+                    };
+
+                    saveIncometoDB(url,options)
+
+                }
+            }
+
+            if (revenues.length > 0) {
+                let message = `Revenues saved for ${selectedDate}:\n`;
+                revenues.forEach((revenue, index) => {
+                    message += `${index + 1}. Salary: ${revenue.salary}, Amount: ₹${revenue.amount}\n`;
+                });
+                //alert(message);
+
+                document.getElementById("revenue-date").value = "";
+                tableBody.innerHTML = "";
+                updateTotalRevenue();
+            } else {
+                alert("No complete revenues to save.");
+            }
+        }
+        async function saveIncometoDB(url,options){
+            try{
+                const response = await fetch(url,options)
+                if(!response.ok){
+                    throw new Error(`Server error: ${response.status}`)
+                }
+                const data=await response.json();
+                if(data.success){
+                    alert(data.message || 'Income Added To Database')
+                }else{
+                    alert(data.message || 'Error Occured')
+                }
+            }catch(error){
+                alert("Error occured while adding income")
+            }
+        }
+    </script>
+</body>
+
+</html>

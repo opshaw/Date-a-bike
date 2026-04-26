@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date A Bike — Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --orange: #E8440A;
+            --orange-dark: #B53208;
+            --cream: #F5EFE0;
+            --black: #0F0D0A;
+            --dark: #1A1612;
+            --dark2: #2A2420;
+            --mid: #5A4F42;
+            --text-muted: #8A7A6A;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--black);
+            color: var(--cream);
+            min-height: 100vh;
+        }
+
+        /* ---- NAVBAR ---- */
+        .admin-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 64px;
+            background: var(--dark);
+            border-bottom: 1px solid rgba(232, 68, 10, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            z-index: 100;
+        }
+
+        .admin-nav-logo {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: 20px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--white);
+        }
+
+        .admin-nav-logo span { color: var(--orange); }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(232, 68, 10, 0.5);
+            color: var(--orange);
+            padding: 8px 20px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover { background: var(--orange); color: var(--white); }
+
+        /* ---- MAIN ---- */
+        .admin-main { padding-top: 64px; min-height: 100vh; }
+
+        /* ---- STATS BAR ---- */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            background: var(--black);
+        }
+
+        .stat-card {
+            background: var(--dark2);
+            padding: 32px 36px;
+            border-bottom: 3px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .stat-card:hover { border-bottom-color: var(--orange); }
+
+        .stat-num {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: 52px;
+            line-height: 1;
+            color: var(--orange);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(245, 239, 224, 0.4);
+            margin-top: 8px;
+        }
+
+        /* ---- TABLE SECTION ---- */
+        .table-section { padding: 32px; }
+
+        .section-heading {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--white);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-heading span { color: var(--orange); }
+
+        .booking-count {
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            color: rgba(245, 239, 224, 0.35);
+            font-family: 'Barlow', sans-serif;
+            text-transform: none;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            background: var(--dark2);
+        }
+
+        table {
+            width: 100%;
+            min-width: 1060px;
+            border-collapse: collapse;
+        }
+
+        thead { background: var(--dark); }
+
+        th {
+            padding: 14px 16px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(245, 239, 224, 0.4);
+            text-align: left;
+            white-space: nowrap;
+            border-bottom: 1px solid rgba(245, 239, 224, 0.06);
+        }
+
+        td {
+            padding: 14px 16px;
+            font-size: 13px;
+            font-weight: 300;
+            color: rgba(245, 239, 224, 0.75);
+            border-bottom: 1px solid rgba(245, 239, 224, 0.04);
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(245, 239, 224, 0.02); }
+
+        .td-name {
+            font-weight: 500;
+            color: var(--cream);
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .td-bike {
+            font-weight: 500;
+            color: var(--cream);
+        }
+
+        .td-num {
+            color: rgba(245, 239, 224, 0.3);
+            font-size: 12px;
+        }
+
+        /* ---- STATUS BADGES ---- */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 2px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .badge-pending   { background: rgba(232,68,10,0.15);  color: #E8440A; border: 1px solid rgba(232,68,10,0.35); }
+        .badge-confirmed { background: rgba(76,175,80,0.12);  color: #4CAF50; border: 1px solid rgba(76,175,80,0.35); }
+        .badge-cancelled { background: rgba(90,79,66,0.25);   color: #8A7A6A; border: 1px solid rgba(90,79,66,0.4); }
+        .badge-completed { background: rgba(25,118,210,0.12); color: #42A5F5; border: 1px solid rgba(25,118,210,0.35); }
+
+        /* ---- ACTION BUTTONS ---- */
+        .action-btn {
+            display: inline-block;
+            padding: 5px 11px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-right: 4px;
+        }
+
+        .btn-confirm  { background: transparent; border: 1px solid rgba(180,180,180,0.35); color: rgba(245,239,224,0.55); }
+        .btn-confirm:hover  { background: rgba(245,239,224,0.08); color: var(--cream); }
+
+        .btn-complete { background: transparent; border: 1px solid rgba(76,175,80,0.45); color: #4CAF50; }
+        .btn-complete:hover { background: rgba(76,175,80,0.1); }
+
+        .btn-cancel   { background: transparent; border: 1px solid rgba(211,47,47,0.45); color: #ef5350; }
+        .btn-cancel:hover   { background: rgba(211,47,47,0.1); }
+
+        .btn-cancel:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* ---- STATE MESSAGES ---- */
+        .state-msg {
+            padding: 56px;
+            text-align: center;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 18px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(245, 239, 224, 0.3);
+        }
+
+        /* ---- LOGIN SCREEN ---- */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background:
+                radial-gradient(ellipse 60% 50% at 50% 50%, rgba(232,68,10,0.07) 0%, transparent 70%);
+        }
+
+        .login-card {
+            background: var(--dark2);
+            padding: 52px 48px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-eyebrow {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .login-eyebrow::before {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 1.5px;
+            background: var(--orange);
+        }
+
+        .login-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: 36px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: var(--white);
+            margin-bottom: 32px;
+            line-height: 1;
+        }
+
+        .login-title span { color: var(--orange); }
+
+        .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+
+        .form-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(245, 239, 224, 0.45);
+        }
+
+        .form-input {
+            background: var(--dark);
+            border: 1px solid rgba(245, 239, 224, 0.1);
+            color: var(--cream);
+            padding: 14px 18px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 14px;
+            font-weight: 300;
+            border-radius: 2px;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        .form-input:focus { border-color: var(--orange); }
+
+        .btn-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: var(--orange);
+            color: var(--white);
+            padding: 15px 32px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .btn-primary:hover { background: var(--orange-dark); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .error-msg {
+            font-size: 13px;
+            color: #ff6b6b;
+            min-height: 20px;
+            margin-top: 4px;
+        }
+
+        /* ---- TOAST ---- */
+        #toast {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            background: var(--orange);
+            color: #fff;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 15px;
+            letter-spacing: 0.08em;
+            padding: 14px 24px;
+            border-radius: 3px;
+            z-index: 300;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 900px) {
+            .stats-bar { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .admin-nav { padding: 0 16px; }
+            .admin-nav-logo { font-size: 15px; }
+            .table-section { padding: 16px; }
+            .stat-card { padding: 20px 24px; }
+            .stat-num { font-size: 40px; }
+            .login-card { padding: 36px 28px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" style="display:none;">
+        <div class="login-screen">
+            <div class="login-card">
+                <div class="login-eyebrow">Admin Panel</div>
+                <div class="login-title">Date A <span>Bike</span></div>
+                <div class="form-group">
+                    <label class="form-label" for="adminEmail">Email</label>
+                    <input type="email" id="adminEmail" class="form-input" placeholder="admin@dateabike.com"
+                        onkeydown="if(event.key==='Enter') handleAdminLogin()">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" class="form-input" placeholder="Your password"
+                        onkeydown="if(event.key==='Enter') handleAdminLogin()">
+                </div>
+                <div id="loginError" class="error-msg"></div>
+                <button class="btn-primary" id="loginBtn" onclick="handleAdminLogin()">Sign In →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD -->
+    <div id="adminDashboard" style="display:none;">
+
+        <nav class="admin-nav">
+            <div class="admin-nav-logo">Date A <span>Bike</span> · Admin</div>
+            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+        </nav>
+
+        <div class="admin-main">
+
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-num" id="statTotal">—</div>
+                    <div class="stat-label">Total Bookings</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num" id="statPending" style="color:#E8440A;">—</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num" id="statConfirmed" style="color:#4CAF50;">—</div>
+                    <div class="stat-label">Confirmed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num" id="statCancelled" style="color:#8A7A6A;">—</div>
+                    <div class="stat-label">Cancelled</div>
+                </div>
+            </div>
+
+            <!-- Bookings Table -->
+            <div class="table-section">
+                <div class="section-heading">
+                    All <span>Bookings</span>
+                    <span class="booking-count" id="bookingCount"></span>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Customer</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Bike</th>
+                                <th>Rental Type</th>
+                                <th>Pickup Date</th>
+                                <th>Return Date</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingsTableBody">
+                            <tr>
+                                <td colspan="11" class="state-msg">Loading bookings...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+        const BASE_URL = 'http://localhost:8000/api/v1';
+
+        // ---- Utilities ----
+
+        function showToast(msg, isError = false) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.background = isError ? '#c0392b' : 'var(--orange)';
+            t.style.opacity = '1';
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => { t.style.opacity = '0'; }, 3000);
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '—';
+            return new Date(dateStr).toLocaleDateString('en-GB'); // DD/MM/YYYY
+        }
+
+        function formatAmount(amount) {
+            if (amount === null || amount === undefined) return '—';
+            return '₹' + Number(amount).toLocaleString('en-IN');
+        }
+
+        function getStatusBadge(status) {
+            const cls = {
+                pending:   'badge-pending',
+                confirmed: 'badge-confirmed',
+                cancelled: 'badge-cancelled',
+                completed: 'badge-completed'
+            };
+            return `<span class="badge ${cls[status] || 'badge-pending'}">${status}</span>`;
+        }
+
+        function getActionButtons(id, status) {
+            let btns = '';
+            if (status === 'pending') {
+                btns += `<button class="action-btn btn-confirm" onclick="handleConfirm('${id}', this)">Confirm</button>`;
+            }
+            if (status === 'confirmed') {
+                btns += `<button class="action-btn btn-complete" onclick="handleComplete('${id}', this)">Complete</button>`;
+            }
+            if (status === 'pending' || status === 'confirmed') {
+                btns += `<button class="action-btn btn-cancel" id="cancel-${id}" onclick="handleCancel('${id}', this)">Cancel</button>`;
+            }
+            return btns || '<span style="color:rgba(245,239,224,0.2); font-size:12px; letter-spacing:0.05em;">—</span>';
+        }
+
+        // ---- Stats ----
+
+        function updateStats(bookings) {
+            document.getElementById('statTotal').textContent     = bookings.length;
+            document.getElementById('statPending').textContent   = bookings.filter(b => b.status === 'pending').length;
+            document.getElementById('statConfirmed').textContent = bookings.filter(b => b.status === 'confirmed').length;
+            document.getElementById('statCancelled').textContent = bookings.filter(b => b.status === 'cancelled').length;
+            const el = document.getElementById('bookingCount');
+            if (el) el.textContent = bookings.length + ' records';
+        }
+
+        // ---- Table ----
+
+        function renderTable(bookings) {
+            const tbody = document.getElementById('bookingsTableBody');
+            if (!bookings.length) {
+                tbody.innerHTML = '<tr><td colspan="11" class="state-msg">No bookings found.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = bookings.map((b, i) => `
+                <tr id="row-${b._id}">
+                    <td class="td-num">${i + 1}</td>
+                    <td class="td-name">${b.customerName}</td>
+                    <td>${b.email}</td>
+                    <td>${b.phone}</td>
+                    <td class="td-bike">${b.bikeName}</td>
+                    <td style="text-transform:capitalize;">${b.rentalType}</td>
+                    <td>${formatDate(b.pickupDate)}</td>
+                    <td>${formatDate(b.returnDate)}</td>
+                    <td style="font-family:'Barlow Condensed',sans-serif; font-size:17px; color:var(--orange); font-weight:700;">${formatAmount(b.totalAmount)}</td>
+                    <td>${getStatusBadge(b.status)}</td>
+                    <td>${getActionButtons(b._id, b.status)}</td>
+                </tr>
+            `).join('');
+        }
+
+        // ---- Load bookings ----
+
+        async function loadBookings() {
+            const token = localStorage.getItem('dab_token');
+            const tbody = document.getElementById('bookingsTableBody');
+            try {
+                const res = await fetch(BASE_URL + '/bookings/all', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+
+                if (res.status === 401) {
+                    tbody.innerHTML = `<tr><td colspan="11" class="state-msg" style="color:#ff6b6b;">
+                        Session expired. <a href="admin.html" style="color:var(--orange); text-decoration:underline;" onclick="localStorage.removeItem('dab_token')">Log in again</a>
+                    </td></tr>`;
+                    localStorage.removeItem('dab_token');
+                    return;
+                }
+
+                if (res.status === 403) {
+                    localStorage.removeItem('dab_token');
+                    document.getElementById('dashboard').style.display = 'none';
+                    document.getElementById('loginScreen').style.display = 'flex';
+                    document.getElementById('loginError').textContent = 'Access denied. This account is not an admin.';
+                    document.getElementById('loginError').style.display = 'block';
+                    return;
+                }
+
+                const json = await res.json();
+                if (!res.ok || !json.success) throw new Error(json.message || 'Failed to load bookings');
+
+                updateStats(json.data);
+                renderTable(json.data);
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="11" class="state-msg" style="color:#ff6b6b; text-transform:none; font-family:'Barlow',sans-serif; font-size:14px;">${err.message}</td></tr>`;
+            }
+        }
+
+        // ---- Actions ----
+
+        async function handleCancel(id, btn) {
+            const token = localStorage.getItem('dab_token');
+            const original = btn.textContent;
+            btn.textContent = '...';
+            btn.disabled = true;
+            try {
+                const res = await fetch(BASE_URL + '/bookings/' + id + '/cancel', {
+                    method: 'PATCH',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const json = await res.json();
+                if (!res.ok || !json.success) throw new Error(json.message || 'Cancel failed');
+                showToast('Booking cancelled successfully');
+                loadBookings();
+            } catch (err) {
+                btn.textContent = original;
+                btn.disabled = false;
+                showToast(err.message, true);
+            }
+        }
+
+        async function handleConfirm(id, btn) {
+            const token = localStorage.getItem('dab_token');
+            const original = btn.textContent;
+            btn.textContent = '...';
+            btn.disabled = true;
+            try {
+                const res = await fetch(BASE_URL + '/bookings/' + id + '/confirm', {
+                    method: 'PATCH',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const json = await res.json();
+                if (!res.ok || !json.success) throw new Error(json.message || 'Confirm failed');
+                showToast('Booking confirmed successfully');
+                loadBookings();
+            } catch (err) {
+                btn.textContent = original;
+                btn.disabled = false;
+                showToast(err.message, true);
+            }
+        }
+
+        async function handleComplete(id, btn) {
+            const token = localStorage.getItem('dab_token');
+            const original = btn.textContent;
+            btn.textContent = '...';
+            btn.disabled = true;
+            try {
+                const res = await fetch(BASE_URL + '/bookings/' + id + '/complete', {
+                    method: 'PATCH',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const json = await res.json();
+                if (!res.ok || !json.success) throw new Error(json.message || 'Complete failed');
+                showToast('Booking marked as completed');
+                loadBookings();
+            } catch (err) {
+                btn.textContent = original;
+                btn.disabled = false;
+                showToast(err.message, true);
+            }
+        }
+
+        // ---- Auth ----
+
+        async function handleAdminLogin() {
+            const email    = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const errEl    = document.getElementById('loginError');
+            const btn      = document.getElementById('loginBtn');
+            errEl.textContent = '';
+
+            if (!email || !password) {
+                errEl.textContent = 'Email and password are required.';
+                return;
+            }
+
+            btn.textContent = 'Signing in...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(BASE_URL + '/users/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const json = await res.json();
+                if (!res.ok || !json.success) throw new Error(json.message || 'Login failed');
+                localStorage.setItem('dab_token', json.data.accessToken);
+                localStorage.setItem('dab_email', json.data.user.email);
+                window.location.reload();
+            } catch (err) {
+                errEl.textContent = err.message;
+                btn.textContent = 'Sign In →';
+                btn.disabled = false;
+            }
+        }
+
+        function handleLogout() {
+            const token = localStorage.getItem('dab_token');
+            if (token) {
+                fetch(BASE_URL + '/users/logout', {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                }).catch(() => {});
+            }
+            localStorage.removeItem('dab_token');
+            localStorage.removeItem('dab_email');
+            window.location.href = 'admin.html';
+        }
+
+        // ---- Init ----
+
+        if (localStorage.getItem('dab_token')) {
+            document.getElementById('adminDashboard').style.display = 'block';
+            loadBookings();
+        } else {
+            document.getElementById('loginScreen').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>

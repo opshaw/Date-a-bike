@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTrack Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/css/dash.css">
+</head>
+
+<body>
+
+    <div class="nav-bar">
+        <div class="navbuttons">
+            <p><span class="fin">Fin</span><span class="track">Track</span></p>
+            <button><a href="/api/v1/users/dashboard">Overview</a></button>
+            <button><a href="/api/v1/users/income">Income</a></button>
+            <button><a href="/api/v1/users/expense">Expense</a></button>
+            <button><a href="/api/v1/users/goals">Goals</a></button>
+        </div>
+        <div>
+            <button id="account"><a href="/api/v1/users/info">Account</a></button>
+        </div>
+    </div>
+
+    <div class="header">
+        <div id="header-buttons">
+            <button class="help-btn">Help?</button>
+            <pre class="tooltip-text">Click on the Income button to 
+add the Income.  
+Click on the Expense button to 
+add the Expense. 
+Click on the Account button to see
+the detail of the user.
+            </pre>
+            <button><a href="/api/v1/users/info">account</a></button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h2>Welcome <span style="color: rgb(62, 123, 42);"><%= user.username %></span> to FinTrack !!</h2>
+        <br>
+        <div class="sub-content">
+            <div class="firstdiv">
+                <div class="box1">
+                    <div class="balance-box">
+                        <h3>Balance</h3>
+                        <p id="balanceAmount"><%= user.balance || '0' %></p>
+                    </div>
+                    <div class="expense-income-box">
+                        <div>
+                            <h3>Expense</h3>
+                            <p id="expenseAmount"><%= user.expense || '0' %></p>
+                        </div>
+                        <div>
+                            <h3>Income</h3>
+                            <p id="incomeAmount"><%= user.income || '0' %></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h3>Expense Breakdown</h3>
+                    <p class="no-data-message">No data available.</p>
+                    <canvas id="expensePieChart"></canvas>
+                </div>
+            </div>
+            <div class="second-div">
+                <div class="chart-box2">
+                    <h3>Category Statistics</h3>
+                    <canvas id="categoryDoughnutChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="sub-content2">
+
+            <div class="currency-converter">
+                <div class="app-details">
+                    <img src="/images/app-icon.svg" class="app-icon" />
+                    <h1 class="app-title">Currency Converter</h1>
+                </div>
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" value="100" />
+                <div class="dropdowns">
+                    <select id="from-currency-select"></select>
+                    <select id="to-currency-select"></select>
+                </div>
+                <button id="convert-button">Convert</button>
+                <p id="result"></p>
+                </div>
+            <div class="history-box">
+                <h3>Expense History</h3>
+                <table id="expenseHistoryTable">
+                    <thead>
+                        <tr>
+                            <th>Serial No</th>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be populated here dynamically -->
+                    </tbody>
+                </table>
+            </div>            
+        </div>
+    </div>
+    <script src="/javascript/currency-code.js"></script>
+    <script src="/javascript/api-key.js"></script>
+    <script src="/javascript/dash.js"></script>
+</body>
+
+</html>

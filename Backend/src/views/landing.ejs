@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTrack Landing Page</title>
+    <!-- Link to the stylesheet in the public folder -->
+    <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+    <!-- Navbar Section -->
+    <nav class="navbar">
+        <div class="logo">
+            <span class="fin">Fin</span><span class="track">Track</span>
+        </div>
+        <div class="nav-buttons">
+            <button class="signin-btn"><a href="/api/v1/users/login">Sign in</a></button>
+            <button class="signup-btn"><a href="/api/v1/users/register">Sign up</a></button>
+        </div>
+    </nav>
+
+    <!-- Main Body Section -->
+    <section class="main-body">
+        <h1 class="main-text">Manage Your Expense <br> <span class="highlight">Control your Money</span></h1>
+        <p class="sub-text">Start Creating your budget and save tons of money</p>
+        <button class="get-started-btn"><a href="/api/v1/users/register">Get Started</a></button>
+
+        <div class="card-box">
+            <div class="card">
+                <!-- Left Side: About FinTrack Points -->
+                <div class="about-section">
+                    <h2>About...</h2>
+                    <ul class="about-points">
+                        <li>Manage expenses easily and effectively.</li>
+                        <li>Receive real-time notifications for upcoming bills and payments.</li>
+                        <li>Track your daily and monthly budget.</li>
+                        <li>Get visual insights with charts and graphs.</li>
+                        <li>Set financial goals and track progress.</li>
+                    </ul>
+                </div>
+        
+                <!-- Right Side: Demo Image -->
+                <div class="image-section">
+                    <img src="/images/image2.webp" alt="FinTrack Demo" class="demo-image">
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
